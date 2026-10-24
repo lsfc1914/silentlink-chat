@@ -6,6 +6,8 @@ import {
   useCallback,
 } from 'react';
 import { useSelector } from 'react-redux';
+import { Download } from 'lucide-react';
+import conversationService from '../api/services/conversationService';
 import Edit from '../assets/edit.svg';
 import Exit from '../assets/exit.svg';
 import { useDarkTheme } from '../hooks';
@@ -14,13 +16,21 @@ import CheckMark2 from '../assets/checkMark2.svg';
 import Trash from '../assets/red-trash.svg';
 import Share from '../assets/share.svg';
 import threeDots from '../assets/three-dots.svg';
-import { selectConversationId } from '../preferences/preferenceSlice';
+import {
+  selectConversationId,
+  selectToken,
+} from '../preferences/preferenceSlice';
 import { ActiveState } from '../models/misc';
 import { ShareConversationModal } from '../modals/ShareConversationModal';
 import { useTranslation } from 'react-i18next';
 import ContextMenu from '../components/ContextMenu';
 import { MenuOption } from '../components/ContextMenu';
 import { useOutsideAlerter } from '../hooks';
+import {
+  conversationToMarkdown,
+  downloadTextFile,
+  toExportFilename,
+} from '../utils/conversationExport';
 
 interface ConversationProps {
   name: string;
@@ -42,6 +52,7 @@ export default function ConversationTile({
   onSave,
 }: ConversationTileProps) {
   const conversationId = useSelector(selectConversationId);
+  const token = useSelector(selectToken);
   const tileRef = useRef<HTMLInputElement>(null);
   const [isDarkTheme] = useDarkTheme();
   const [isEdit, setIsEdit] = useState(false);
@@ -61,6 +72,30 @@ export default function ConversationTile({
     event.stopPropagation();
     setIsEdit(true);
     setOpen(false);
+  }
+
+  async function handleExportConversation(event: SyntheticEvent) {
+    event.stopPropagation();
+    setOpen(false);
+    try {
+      const response = await conversationService.getConversation(
+        conversation.id,
+        token,
+      );
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      const markdown = conversationToMarkdown(
+        conversation.name,
+        data?.queries ?? [],
+      );
+      downloadTextFile(
+        markdown,
+        toExportFilename(conversation.name, 'md'),
+        'text/markdown',
+      );
+    } catch (error) {
+      console.error('Failed to export conversation:', error);
+    }
   }
 
   function handleSaveConversation(changedConversation: ConversationProps) {
@@ -149,6 +184,13 @@ export default function ConversationTile({
       label: t('convTile.rename'),
       onClick: handleEditConversation,
       variant: 'primary',
+    },
+    {
+      icon: Download,
+      label: t('convTile.export'),
+      onClick: handleExportConversation,
+      variant: 'primary',
+      iconClassName: 'text-muted-foreground',
     },
     {
       icon: Trash,

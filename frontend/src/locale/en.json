@@ -518,6 +518,7 @@
   },
   "convTile": {
     "share": "Share",
+    "export": "Export",
     "delete": "Delete",
     "rename": "Rename",
     "deleteWarning": "Are you sure you want to delete this conversation?"

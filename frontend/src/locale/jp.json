@@ -506,6 +506,7 @@
   },
   "convTile": {
     "share": "共有",
+    "export": "エクスポート",
     "delete": "削除",
     "rename": "名前変更",
     "deleteWarning": "この会話を削除してもよろしいですか？"

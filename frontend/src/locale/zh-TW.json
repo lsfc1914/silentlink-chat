@@ -506,6 +506,7 @@
   },
   "convTile": {
     "share": "分享",
+    "export": "匯出",
     "delete": "刪除",
     "rename": "重新命名",
     "deleteWarning": "您確定要刪除這個對話嗎？"

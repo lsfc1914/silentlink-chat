@@ -506,6 +506,7 @@
   },
   "convTile": {
     "share": "Compartir",
+    "export": "Exportar",
     "delete": "Eliminar",
     "rename": "Renombrar",
     "deleteWarning": "¿Está seguro de que desea eliminar esta conversación?"

@@ -488,6 +488,7 @@
   },
   "convTile": {
     "share": "Teilen",
+    "export": "Exportieren",
     "delete": "Löschen",
     "rename": "Umbenennen",
     "deleteWarning": "Bist du sicher, dass du diese Konversation löschen möchtest?"

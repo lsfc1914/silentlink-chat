@@ -1,6 +1,10 @@
 # Allow lines to be as long as 120 characters.
 line-length = 120
 
+[lint]
+# Keep ruff's classic default rule set; recent releases enable many more rules by default.
+select = ["E4", "E7", "E9", "F"]
+
 [lint.per-file-ignores]
 # Integration tests use sys.path.insert() before imports for standalone execution
 "tests/integration/*.py" = ["E402"]

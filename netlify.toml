@@ -1,0 +1,18 @@
+# The deployable web app is the Vite + React frontend in ./frontend.
+# The Flask/Celery backend is not hosted on Netlify; point the frontend at it
+# with the VITE_API_HOST environment variable.
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Skip installing git hooks during CI installs
+  HUSKY = "0"
+
+# Single-page app: let React Router handle client-side routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

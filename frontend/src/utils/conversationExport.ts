@@ -1,4 +1,4 @@
-type ExportSource = { title?: string; link?: string };
+type ExportSource = { title?: string; link?: string; source?: string };
 
 export type ExportQuery = {
   prompt?: string | null;
@@ -30,16 +30,18 @@ export function conversationToMarkdown(
     lines.push('## Assistant', '');
     lines.push(query.response?.trim() || '_No response_', '');
 
-    const sources = (query.sources ?? []).filter((s) => s?.title || s?.link);
+    const sources = (query.sources ?? []).filter(
+      (s) => s?.title || s?.source || s?.link,
+    );
     if (sources.length) {
       lines.push('**Sources:**', '');
       sources.forEach((source, index) => {
-        const label = source.title || source.link;
-        const isUrl = source.link && /^https?:\/\//i.test(source.link);
+        const location = source.source || source.link;
+        const url =
+          location && /^https?:\/\//i.test(location) ? location : undefined;
+        const label = source.title || location;
         lines.push(
-          isUrl
-            ? `${index + 1}. [${label}](${source.link})`
-            : `${index + 1}. ${label}`,
+          url ? `${index + 1}. [${label}](${url})` : `${index + 1}. ${label}`,
         );
       });
       lines.push('');

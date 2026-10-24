@@ -36,10 +36,10 @@ export function conversationToMarkdown(
     if (sources.length) {
       lines.push('**Sources:**', '');
       sources.forEach((source, index) => {
-        const location = source.source || source.link;
-        const url =
-          location && /^https?:\/\//i.test(location) ? location : undefined;
-        const label = source.title || location;
+        const url = [source.source, source.link].find(
+          (value) => value && /^https?:\/\//i.test(value),
+        );
+        const label = source.title || source.source || source.link;
         lines.push(
           url ? `${index + 1}. [${label}](${url})` : `${index + 1}. ${label}`,
         );

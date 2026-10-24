@@ -1,0 +1,7 @@
+{
+  "name": "strapi-plugin-netlify-deployments",
+  "version": "0.0.0-noop",
+  "private": true,
+  "description": "No-op Netlify build plugin. The real npm package is a Strapi CMS plugin that is enabled in the Netlify UI by mistake and cannot be loaded by Netlify Build. Remove this stub once the plugin is uninstalled from the project settings.",
+  "main": "index.js"
+}
